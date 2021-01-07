@@ -6,7 +6,7 @@
     <description>${project.description}</description>
     <author>Ignite Realtime</author>
     <version>${project.version}</version>
-    <date>01/08/2021</date>
+    <date>01/07/2021</date>
 
     <adminconsole>
         <tab id="tab-server">
