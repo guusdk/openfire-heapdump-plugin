@@ -16,14 +16,18 @@
 package org.igniterealtime.openfire.plugin.heapdump;
 
 import com.sun.management.HotSpotDiagnosticMXBean;
+import org.jivesoftware.openfire.XMPPServer;
 import org.jivesoftware.openfire.container.Plugin;
 import org.jivesoftware.openfire.container.PluginManager;
+import org.jivesoftware.util.JiveGlobals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class HeapDumpPlugin implements Plugin
 {
@@ -57,11 +61,12 @@ public class HeapDumpPlugin implements Plugin
     {
         Log.info( "Generating heap dump in {}", outputFile );
         try {
+            String fullOutputPath = Paths.get(JiveGlobals.getHomeDirectory(), outputFile).toAbsolutePath().toString();
             ManagementFactory.newPlatformMXBeanProxy(
                     ManagementFactory.getPlatformMBeanServer(),
                     "com.sun.management:type=HotSpotDiagnostic",
                     HotSpotDiagnosticMXBean.class)
-                .dumpHeap(outputFile, live);
+                .dumpHeap(fullOutputPath, live);
             Log.info( "Heap dump generated in {}", outputFile );
         } catch (Exception e) {
             Log.info( "Heap dump generation failed.", e );
